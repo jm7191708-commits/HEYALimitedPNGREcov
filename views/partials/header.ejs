@@ -1,0 +1,204 @@
+<%
+  const current = typeof active !== "undefined" ? active : "";
+  const titleText = typeof pageTitle !== "undefined" ? pageTitle : "HEYA Talent Solutions";
+  const descriptionText = typeof pageDescription !== "undefined"
+    ? pageDescription
+    : "HEYA Talent Solutions is a division of HEYA Limited and Strategic Talent Acquisition Partner for Papua New Guinea.";
+  const bodyIdText = typeof bodyId !== "undefined" ? bodyId : "";
+  const siteName = "HEYA Talent Solutions";
+  const fullTitle = titleText.includes("|") || titleText === siteName ? titleText : `${titleText} | ${siteName}`;
+  const navItems = [
+    { key: "home",     label: "Home",     href: "/", icon: "fa-house", desc: "Back to the main page" },
+    {
+      key: "services", label: "Services", href: "/services", icon: "fa-briefcase", desc: "Recruitment and workforce support",
+      children: [
+        { label: "Services",  href: "/services",  icon: "fa-briefcase",  desc: "Recruitment and workforce support" },
+        { label: "Packages",  href: "/packages",  icon: "fa-box-open",   desc: "Advertising package options"       }
+      ]
+    },
+    {
+      key: "careers", label: "Register Profile", href: "/careers", icon: "fa-id-card", desc: "Employer and job seeker portals",
+      children: [
+        { label: "Employer Portal",   href: "/careers/employers",  icon: "fa-building-columns", desc: "Post vacancies & hire talent" },
+        { label: "Jobseeker Portal",  href: "/careers/jobseekers", icon: "fa-user-tie",          desc: "Browse & apply for roles"    }
+      ]
+    },
+    { key: "vacancies", label: "Current Vacancies", href: "/careers/vacancies", icon: "fa-list-check", desc: "All active job openings across PNG" },
+    { key: "contact",  label: "Contact",  href: "/contact", icon: "fa-envelope-open-text", desc: "Reach the HEYA Talent Solutions team" },
+    { key: "about",    label: "About",    href: "/about",   icon: "fa-circle-info",         desc: "About HEYA Talent Solutions"      }
+  ];
+%>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="<%= descriptionText %>" />
+  <title><%= fullTitle %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;500;600;700;800&family=Source+Sans+3:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="/imgs/heya-talent-solutions-mark.jpg?v=20260518" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/site.css?v=20260524-applysheet" />
+</head>
+<body class="page site-loading" id="<%= bodyIdText %>">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="site-loader" id="site-loader" aria-hidden="false">
+    <div class="site-loader__card" role="status" aria-live="polite" aria-label="Loading site">
+      <div class="site-loader__animation">
+        <img class="site-loader__logo" src="/imgs/heya-talent-solutions-mark.jpg?v=20260518" alt="" width="96" height="64" />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 66" class="site-loader__spinner" role="presentation">
+          <defs>
+            <linearGradient id="site-loader-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop stop-opacity="1" stop-color="#f5a800" offset="0%"></stop>
+              <stop stop-opacity="1" stop-color="#003b7a" offset="55%"></stop>
+              <stop stop-opacity="0" stop-color="#003b7a" offset="100%"></stop>
+            </linearGradient>
+          </defs>
+          <circle
+            stroke="url(#site-loader-gradient)"
+            r="26"
+            cy="33"
+            cx="33"
+            stroke-width="3"
+            fill="transparent"
+            class="site-loader__path">
+          </circle>
+        </svg>
+      </div>
+      <strong>Loading HEYA Talent Solutions</strong>
+      <p>Preparing the site for you.</p>
+    </div>
+  </div>
+  <div class="site-shell" data-site-shell>
+
+  <header class="site-header" role="banner">
+    <div class="container header__inner">
+      <a class="brand" href="/" aria-label="HEYA Talent Solutions home">
+        <span class="brand__mark" aria-hidden="true">
+          <img src="/imgs/heya-talent-solutions-mark.jpg?v=20260518" alt="" width="56" height="37" />
+        </span>
+        <span class="brand__text">
+          <span class="brand__name">HEYA Talent Solutions</span>
+          <span class="brand__line">Strategic Talent Acquisition Partner</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <% navItems.forEach((item) => { %>
+          <% if (item.children) { %>
+            <div class="nav__dropdown <%= current === item.key ? 'is-active' : '' %>">
+              <button class="nav__link nav__dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+                <%= item.label %><i class="fa-solid fa-chevron-down nav__caret" aria-hidden="true"></i>
+              </button>
+              <div class="nav__dropdown-menu" role="menu">
+                <% item.children.forEach((child) => { %>
+                  <a class="nav__dropdown-item" href="<%= child.href %>" role="menuitem">
+                    <span class="nav__dropdown-icon"><i class="fa-solid <%= child.icon %>" aria-hidden="true"></i></span>
+                    <span class="nav__dropdown-text">
+                      <strong><%= child.label %></strong>
+                      <small><%= child.desc %></small>
+                    </span>
+                  </a>
+                <% }) %>
+              </div>
+            </div>
+          <% } else { %>
+            <a class="nav__link <%= current === item.key ? 'is-active' : '' %>" href="<%= item.href %>" <%= current === item.key ? 'aria-current="page"' : '' %>><%= item.label %></a>
+          <% } %>
+        <% }) %>
+      </nav>
+
+      <button class="header__search-btn" type="button" id="headerSearchBtn" aria-label="Search the site" aria-expanded="false" aria-controls="searchPanel">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      </button>
+
+      <a class="learn-more learn-more--compact header__cta" href="/advertise" aria-label="Advertise a vacancy">
+        <span class="circle" aria-hidden="true">
+          <span class="icon arrow"></span>
+        </span>
+        <span class="button-text">Advertise Now</span>
+      </a>
+
+      <button id="hamburger" class="hamburger" type="button" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">
+      <div class="mobile-menu__profile">
+        <div class="mobile-menu__profile-main">
+          <span class="mobile-menu__avatar" aria-hidden="true">
+            <img src="/imgs/heya-talent-solutions-mark.jpg?v=20260518" alt="" width="56" height="37" />
+          </span>
+          <span class="mobile-menu__profile-copy">
+            <strong>HEYA Talent Solutions</strong>
+            <span>Strategic Talent Acquisition Partner</span>
+          </span>
+        </div>
+        <button id="mobile-menu-close" class="mobile-menu__close" type="button" aria-label="Close menu">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="mobile-menu__section">
+        <p class="mobile-menu__section-label">Navigation</p>
+        <div class="mobile-menu__nav">
+          <% navItems.forEach((item) => { %>
+            <% if (item.children) { %>
+              <div class="mobile-menu__group">
+                <a class="mobile-menu__link <%= current === item.key ? 'is-active' : '' %>" href="<%= item.href %>">
+                  <span class="mobile-menu__icon" aria-hidden="true">
+                    <i class="fa-solid <%= item.icon %>"></i>
+                  </span>
+                  <span class="mobile-menu__content">
+                    <span class="mobile-menu__title"><%= item.label %></span>
+                    <span class="mobile-menu__meta"><%= item.desc %></span>
+                  </span>
+                </a>
+                <div class="mobile-menu__subnav">
+                  <% item.children.forEach((child) => { %>
+                    <a class="mobile-menu__link mobile-menu__link--sub" href="<%= child.href %>">
+                      <span class="mobile-menu__icon" aria-hidden="true">
+                        <i class="fa-solid <%= child.icon %>"></i>
+                      </span>
+                      <span class="mobile-menu__content">
+                        <span class="mobile-menu__title"><%= child.label %></span>
+                        <span class="mobile-menu__meta"><%= child.desc %></span>
+                      </span>
+                    </a>
+                  <% }) %>
+                </div>
+              </div>
+            <% } else { %>
+              <a class="mobile-menu__link <%= current === item.key ? 'is-active' : '' %>" href="<%= item.href %>">
+                <span class="mobile-menu__icon" aria-hidden="true">
+                  <i class="fa-solid <%= item.icon %>"></i>
+                </span>
+                <span class="mobile-menu__content">
+                  <span class="mobile-menu__title"><%= item.label %></span>
+                  <span class="mobile-menu__meta"><%= item.desc %></span>
+                </span>
+              </a>
+            <% } %>
+          <% }) %>
+        </div>
+      </div>
+
+      <div class="mobile-menu__section mobile-menu__section--footer">
+        <p class="mobile-menu__section-label">Quick Action</p>
+        <a class="mobile-menu__link mobile-menu__cta" href="/advertise" aria-label="Advertise a vacancy">
+          <span class="mobile-menu__icon" aria-hidden="true">
+            <i class="fa-solid fa-bullhorn"></i>
+          </span>
+          <span class="mobile-menu__content">
+            <span class="mobile-menu__title">Advertise Now</span>
+            <span class="mobile-menu__meta">Promote a vacancy and reach talent fast</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </header>

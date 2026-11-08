@@ -1,0 +1,83 @@
+services:
+  - type: web
+    name: heya-limited-website
+    runtime: node
+    region: singapore
+    plan: starter
+    buildCommand: npm ci --omit=dev && npm run render:env:check
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    disk:
+      name: heya-submissions-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      - key: SQLITE_DB_PATH
+        value: /var/data/website_data.sqlite
+      - key: RENDER_DISK_MOUNT_PATH
+        value: /var/data
+      - key: DATABASE_URL
+        sync: false
+      - key: POSTGRES_URL
+        sync: false
+      - key: DASHBOARD_ADMIN_EMAIL
+        value: admin@heya.com.pg
+      - key: DASHBOARD_ADMIN_PASSWORD
+        sync: false
+      - key: DASHBOARD_PROFILE_IMAGE_URL
+        value: /imgs/heya-talent-solutions-mark.jpg?v=20260518
+      - key: JWT_SECRET
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: DASHBOARD_SESSION_DURATION
+        value: 43200
+      - key: DASHBOARD_LOGIN_SLUG
+        value: login
+      - key: MCP_GATEWAY_URL
+        value: https://roxannemcp.onrender.com
+      - key: MCP_CLIENT_ID
+        value: app_7149c1099ab1f240
+      - key: MCP_SECRET
+        sync: false
+      - key: MCP_SCOPES
+        value: mcp:execute,mcp:agent,memory:read,memory:write,social:facebook,social:linkedin
+      - key: MCP_ALLOWED_TOOLS
+        value: linkedin_post,facebook_post
+      - key: FACEBOOK_APP_ID
+        value: 1963932798341042
+      - key: FACEBOOK_CLIENT_SECRET
+        sync: false
+      - key: SENDGRID_ENABLED
+        value: true
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: BUSINESS_EMAIL
+        sync: false
+      - key: EMAIL_FROM_NAME
+        value: HEYA Talent Solutions
+      - key: EMAIL_INTERNAL_FROM_NAME
+        value: HEYA Talent Solutions Website
+      - key: EMAIL_SUBJECT_PREFIX
+        value: HEYA Talent Solutions
+      - key: SENDGRID_SANDBOX_MODE
+        value: false
+      - key: BANNER_URL
+        value: http://cdn.mcauto-images-production.sendgrid.net/ddeb9514b26f02ed/15474cc9-c877-4815-a7e7-8f100d883f3e/1440x720.jpg
+      - key: CAREERS_UPLOAD_DIR
+        value: /var/data/uploads/careers
+      - key: CAREERS_HR_EMAIL
+        sync: false
+      - key: CAREERS_ADVERTISING_EMAIL
+        sync: false
+      - key: PIPEDRIVE_API_KEY
+        value: 085d81d3c7c7f78b465e9d15ffb216aa1eddf339
+      - key: OPENAI_API_KEY
+        sync: false

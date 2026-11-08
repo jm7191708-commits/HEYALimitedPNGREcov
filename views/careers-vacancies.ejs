@@ -1,0 +1,427 @@
+<%- include("partials/header", {
+  active: "vacancies",
+  bodyId: "page-careers-vacancies",
+  pageTitle: "Current Vacancies | HEYA Talent Solutions",
+  pageDescription: "Browse current job vacancies across Papua New Guinea's resources, private business, government, construction, engineering, and service sectors."
+}) %>
+<%
+  const externalHref = (url) => {
+    const value = String(url || "").trim();
+    if (!value) return "";
+    if (/^https?:\/\//i.test(value)) return value;
+    if (value.startsWith("//")) return `https:${value}`;
+    return `https://${value.replace(/^\/+/, "")}`;
+  };
+
+  const DEFAULT_LOGO   = "/imgs/default-company-logo.png";
+  const DEFAULT_COVER  = "/imgs/default-job-cover.jpg";
+  const FALLBACK_LOGO  = "/imgs/heya-talent-solutions-mark.jpg";
+  const FALLBACK_COVER = "/imgs/heya-talent-solutions-logo.jpg";
+
+  const logoSrc  = (job) => job.companyLogoUrl || DEFAULT_LOGO;
+  const coverSrc = (job) => job.coverPhotoUrl  || DEFAULT_COVER;
+  const toLines  = (str) =>
+    String(str || "").split(/\r?\n/).map(s => s.replace(/^[-•*]\s*/, "").trim()).filter(Boolean);
+
+  /* Extract short ref — "TC-2026-001" → "001" */
+  const shortRef = (ref) => {
+    const m = String(ref || "").match(/(\d+)$/);
+    return m ? m[1] : String(ref || "");
+  };
+%>
+
+<main id="content">
+
+  <%/* ══════════════════════════════════════════
+     LIST VIEW
+  ══════════════════════════════════════════ */%>
+  <div id="vacListView">
+
+    <section class="page-hero section--dark">
+      <canvas id="vacanciesWireframeCanvas" class="wireframe-canvas" aria-hidden="true" hidden></canvas>
+      <figure class="page-hero__cover" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1800&q=70" alt="" loading="eager" decoding="async" />
+      </figure>
+      <div class="container page-hero__inner">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/careers">Careers</a>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          <span aria-current="page">Current Vacancies</span>
+        </nav>
+        <p class="eyebrow eyebrow--gold">Current Vacancies</p>
+        <h1>Current Openings Across PNG</h1>
+        <p>Vacancies sourced and managed by HEYA Talent Solutions. New roles added regularly across PNG resources, private business, government, construction, engineering, and service sectors.</p>
+      </div>
+    </section>
+
+    <section class="section section--surface" aria-label="Job listings">
+      <div class="vac2-shell">
+
+        <% if (jobs.length === 0) { %>
+        <div class="vacancy-empty">
+          <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+          <p>No vacancies are currently listed. Check back soon — new roles are added regularly.</p>
+          <a href="/careers/jobseekers" class="btn btn--outline">Submit Your CV</a>
+        </div>
+        <% } else { %>
+
+        <div class="vac2-topbar">
+          <div>
+            <p class="vac2-count"><%= jobs.length %> open position<%= jobs.length !== 1 ? "s" : "" %></p>
+          </div>
+        </div>
+
+        <div class="vac2-grid" role="list">
+          <% jobs.forEach((job) => { %>
+          <button
+            class="vac2-card<%= job.urgent ? ' vac2-card--urgent' : '' %><%= job.featured ? ' vac2-card--featured' : '' %>"
+            type="button"
+            role="listitem"
+            data-job="<%= job.id %>"
+            data-ref="<%= shortRef(job.ref) %>"
+            aria-label="View full advertisement: <%= job.title %> at <%= job.company %>"
+          >
+            <%/* Cover photo */%>
+            <div class="vac2-card__cover">
+              <img src="<%= coverSrc(job) %>" alt="" loading="lazy"
+                   onerror="this.src='<%= FALLBACK_COVER %>'" />
+            </div>
+
+            <div class="vac2-card__body">
+              <%/* Logo pulls up over cover */%>
+              <div class="vac2-card__logo-wrap">
+                <img class="vac2-card__logo"
+                     src="<%= logoSrc(job) %>"
+                     alt="<%= job.company %> logo"
+                     loading="lazy"
+                     onerror="this.src='<%= FALLBACK_LOGO %>'" />
+              </div>
+
+              <%/* Company + Title */%>
+              <div class="vac2-card__company"><%= job.company %></div>
+              <h2 class="vac2-card__title"><%= job.title %></h2>
+
+              <%/* Badges */%>
+              <% if (job.urgent || job.featured) { %>
+              <div class="vac2-card__badges">
+                <% if (job.urgent)   { %><span class="vac-badge vac-badge--urgent"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Urgent</span><% } %>
+                <% if (job.featured) { %><span class="vac-badge vac-badge--featured"><i class="fa-solid fa-star" aria-hidden="true"></i> Featured</span><% } %>
+              </div>
+              <% } %>
+
+              <%/* Meta chips */%>
+              <div class="vac2-card__chips">
+                <% if (job.location) { %><span><i class="fa-solid fa-location-dot" aria-hidden="true"></i><%= job.location %></span><% } %>
+                <% if (job.type)     { %><span><i class="fa-solid fa-briefcase"     aria-hidden="true"></i><%= job.type %></span><% } %>
+                <% if (job.salary)   { %><span><i class="fa-solid fa-circle-dollar-to-slot" aria-hidden="true"></i><%= job.salary %></span><% } %>
+              </div>
+
+              <%/* Excerpt */%>
+              <% const excerpt = String(job.description || "").trim().slice(0, 160); %>
+              <% if (excerpt) { %>
+              <p class="vac2-card__excerpt"><%= excerpt %><% if ((job.description||"").length > 160) { %>…<% } %></p>
+              <% } %>
+
+              <%/* Card footer */%>
+              <div class="vac2-card__foot">
+                <span class="vac2-card__closing">
+                  <i class="fa-regular fa-calendar-xmark" aria-hidden="true"></i>
+                  Closes <%= job.closing || "Open until filled" %>
+                </span>
+                <span class="vac2-card__arrow" aria-hidden="true">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </span>
+              </div>
+            </div>
+
+          </button>
+          <% }) %>
+        </div><%/* /.vac2-grid */%>
+
+        <div class="vacancy-coming-soon">
+          <i class="fa-solid fa-bell" aria-hidden="true"></i>
+          <p>More roles are added regularly. <a href="/careers/jobseekers">Submit your CV</a> to be notified when new positions match your profile.</p>
+        </div>
+
+        <% } %>
+      </div><%/* /.vac2-shell */%>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="careers-cta-grid">
+          <div class="careers-cta-card careers-cta-card--candidate">
+            <div class="careers-cta-card__icon"><i class="fa-solid fa-user-tie" aria-hidden="true"></i></div>
+            <h3>Not finding your role?</h3>
+            <p>Submit your CV to our talent pool. Our recruitment team will contact you when a suitable vacancy opens, including roles not yet publicly advertised.</p>
+            <a class="btn btn--dark" href="/contact?intent=jobseeker-cv">Submit Your CV</a>
+          </div>
+          <div class="careers-cta-card careers-cta-card--employer">
+            <div class="careers-cta-card__icon"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i></div>
+            <h3>Looking to hire?</h3>
+            <p>Post your vacancy and reach qualified, screened candidates across Papua New Guinea's resources, private business, government, and service sectors.</p>
+            <a class="btn btn--gold" href="/advertise">Advertise a Vacancy</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><%/* /#vacListView */%>
+
+
+  <%/* ══════════════════════════════════════════
+     DETAIL VIEW  (hidden until card clicked)
+  ══════════════════════════════════════════ */%>
+  <div id="vacDetailView" class="vac2-detail-wrap" aria-live="polite">
+    <div class="vac2-shell">
+
+      <div class="vac2-back-bar">
+        <button class="vac2-back-btn" type="button" id="vacBackBtn">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to Vacancies
+        </button>
+      </div>
+
+      <% jobs.forEach((job) => {
+        const descLines = toLines(job.responsibilities);
+        const reqLines  = toLines(job.requirements);
+        const jobLogo   = logoSrc(job);
+        const jobCover  = coverSrc(job);
+      %>
+      <article id="vac-detail-<%= job.id %>" class="vac2-detail" hidden
+               data-ref="<%= shortRef(job.ref) %>"
+               aria-labelledby="vac-title-<%= job.id %>">
+
+        <%/* Full-width cover photo */%>
+        <div class="vac2-detail__cover">
+          <img src="<%= jobCover %>" alt="" loading="lazy"
+               onerror="this.src='<%= FALLBACK_COVER %>'" />
+        </div>
+
+        <%/* Header: logo + company + title */%>
+        <div class="vac2-detail__header">
+          <img class="vac2-detail__logo"
+               src="<%= jobLogo %>"
+               alt="<%= job.company %> logo"
+               loading="lazy"
+               onerror="this.src='<%= FALLBACK_LOGO %>'" />
+          <div>
+            <div class="vac2-detail__company"><%= job.company %></div>
+            <h2 class="vac2-detail__title" id="vac-title-<%= job.id %>"><%= job.title %></h2>
+          </div>
+        </div>
+
+        <%/* Meta pills — ref ID first, then details */%>
+        <div class="vac2-detail__meta">
+          <span class="vac2-pill vac2-pill--ref"><i class="fa-solid fa-hashtag" aria-hidden="true"></i><%= shortRef(job.ref) %></span>
+          <% if (job.industry) { %><span class="vac2-pill"><i class="fa-solid fa-industry" aria-hidden="true"></i><%= job.industry %></span><% } %>
+          <% if (job.location) { %><span class="vac2-pill"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><%= job.location %></span><% } %>
+          <% if (job.type)     { %><span class="vac2-pill"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><%= job.type %></span><% } %>
+          <% if (job.salary)   { %><span class="vac2-pill"><i class="fa-solid fa-circle-dollar-to-slot" aria-hidden="true"></i><%= job.salary %> p.a.</span><% } %>
+          <% if (job.level)    { %><span class="vac2-pill"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><%= job.level %></span><% } %>
+          <% if (job.urgent)   { %><span class="vac-badge vac-badge--urgent"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Urgent</span><% } %>
+          <% if (job.featured) { %><span class="vac-badge vac-badge--featured"><i class="fa-solid fa-star" aria-hidden="true"></i> Featured</span><% } %>
+        </div>
+
+        <%/* Share button */%>
+        <div class="vac2-share-bar">
+          <button type="button" class="vac2-share-btn" data-share-ref="<%= shortRef(job.ref) %>">
+            <i class="fa-solid fa-share-nodes" aria-hidden="true"></i> Share this position
+          </button>
+        </div>
+
+        <%/* About Us */%>
+        <% if (job.companyDescription && job.companyDescription.trim()) { %>
+        <div class="vac2-section">
+          <h3>About Us</h3>
+          <% job.companyDescription.split(/\r?\n/).filter(l => l.trim()).forEach(para => { %>
+          <p><%= para.trim() %></p>
+          <% }) %>
+        </div>
+        <% } %>
+
+        <%/* About the Role */%>
+        <% if (job.description && job.description.trim()) { %>
+        <div class="vac2-section">
+          <h3>About the Role</h3>
+          <% job.description.split(/\r?\n/).filter(l => l.trim()).forEach(para => { %>
+          <p><%= para.trim() %></p>
+          <% }) %>
+        </div>
+        <% } %>
+
+        <%/* Key Responsibilities */%>
+        <% if (descLines.length > 0) { %>
+        <div class="vac2-section">
+          <h3>Key Responsibilities</h3>
+          <ul>
+            <% descLines.forEach(item => { %><li><%= item %></li><% }) %>
+          </ul>
+        </div>
+        <% } %>
+
+        <%/* Qualifications */%>
+        <% if (reqLines.length > 0) { %>
+        <div class="vac2-section">
+          <h3>Qualifications &amp; Experience</h3>
+          <ul>
+            <% reqLines.forEach(item => { %><li><%= item %></li><% }) %>
+          </ul>
+        </div>
+        <% } %>
+
+        <%/* How to Apply */%>
+        <div class="vac2-section vac2-section--apply">
+          <h3>How to Apply</h3>
+          <p>Interested applicants are invited to submit:</p>
+          <ul>
+            <li>Updated CV / Resume</li>
+            <% if (job.coverLetterRequired) { %><li>Cover Letter addressed to the Hiring Manager</li><% } %>
+          </ul>
+          <% if (job.externalApplyUrl) { %>
+          <p class="vac2-apply-note">Applications must be submitted directly via the employer's career site.</p>
+          <a href="<%= externalHref(job.externalApplyUrl) %>"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--gold vac2-apply-btn">
+            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Apply on Employer Site
+          </a>
+          <% } else { %>
+          <p class="vac2-apply-note">Submit your application through HEYA Talent Solutions. Our recruitment team will review and be in touch.</p>
+          <button type="button"
+                  class="btn btn--gold vac2-apply-btn"
+                  data-apply-job
+                  data-job-id="<%= job.id %>">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Apply Now
+          </button>
+          <% } %>
+          <% if (job.externalLinks && job.externalLinks.length) { %>
+          <div class="vac-post__links" style="margin-top:1rem">
+            <% job.externalLinks.filter(l => l.url).forEach(link => { %>
+            <a href="<%= externalHref(link.url) %>" target="_blank" rel="noopener noreferrer" class="posting-doc__link-chip">
+              <i class="fa-solid fa-link" aria-hidden="true"></i><%= link.label || link.url %>
+            </a>
+            <% }) %>
+          </div>
+          <% } %>
+        </div>
+
+        <%/* Doc footer: ref + closing */%>
+        <div class="vac2-doc-footer">
+          <span><i class="fa-solid fa-hashtag" aria-hidden="true"></i>Ref: <%= job.ref || "N/A" %></span>
+          <span><i class="fa-regular fa-calendar-xmark" aria-hidden="true"></i>Closing: <%= job.closing || "Open until filled" %></span>
+        </div>
+
+      </article>
+      <% }) %>
+
+    </div><%/* /.vac2-shell */%>
+  </div><%/* /#vacDetailView */%>
+
+</main>
+
+<%- include("partials/footer") %>
+
+<script>
+(function () {
+  "use strict";
+
+  var listView   = document.getElementById("vacListView");
+  var detailWrap = document.getElementById("vacDetailView");
+  var backBtn    = document.getElementById("vacBackBtn");
+  var scrollY    = 0;
+
+  /* ── Show a job detail page ── */
+  function showDetail(id, pushState) {
+    detailWrap.querySelectorAll(".vac2-detail").forEach(function (a) { a.hidden = true; });
+
+    var article = document.getElementById("vac-detail-" + id);
+    if (!article) return;
+
+    scrollY = window.scrollY || window.pageYOffset;
+
+    listView.hidden = true;
+    article.hidden  = false;
+    detailWrap.classList.add("is-active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    /* Update URL so this page is shareable */
+    if (pushState !== false) {
+      var ref = article.dataset.ref || id;
+      var url = location.pathname + "?ref=" + encodeURIComponent(ref);
+      history.pushState({ jobId: id, ref: ref }, "", url);
+    }
+  }
+
+  /* ── Back to grid ── */
+  function showList(pushState) {
+    detailWrap.querySelectorAll(".vac2-detail").forEach(function (a) { a.hidden = true; });
+    detailWrap.classList.remove("is-active");
+    listView.hidden = false;
+    window.scrollTo({ top: scrollY, behavior: "smooth" });
+
+    if (pushState !== false) {
+      history.pushState({}, "", location.pathname);
+    }
+  }
+
+  /* ── Wire card clicks ── */
+  document.querySelectorAll(".vac2-card[data-job]").forEach(function (card) {
+    var id = card.dataset.job;
+    card.addEventListener("click",   function ()  { showDetail(id); });
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showDetail(id); }
+    });
+  });
+
+  /* ── Back button ── */
+  if (backBtn) backBtn.addEventListener("click", function () { showList(); });
+
+  /* ── Browser back/forward button ── */
+  window.addEventListener("popstate", function (e) {
+    if (e.state && e.state.jobId) {
+      showDetail(e.state.jobId, false);
+    } else {
+      showList(false);
+    }
+  });
+
+  /* ── ESC to go back ── */
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && detailWrap.classList.contains("is-active")) showList();
+  });
+
+  /* ── Copy share link buttons ── */
+  document.querySelectorAll("[data-share-ref]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var ref  = btn.dataset.shareRef;
+      var url  = location.origin + location.pathname + "?ref=" + encodeURIComponent(ref);
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function () {
+          var orig = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Copied!';
+          btn.classList.add("vac2-share-btn--copied");
+          setTimeout(function () {
+            btn.innerHTML = orig;
+            btn.classList.remove("vac2-share-btn--copied");
+          }, 2200);
+        });
+      } else {
+        prompt("Copy this link:", url);
+      }
+    });
+  });
+
+  /* ── Auto-open from URL on page load ── */
+  (function autoOpen() {
+    var params = new URLSearchParams(location.search);
+    var ref    = params.get("ref");
+    if (!ref) return;
+
+    /* find card whose data-ref matches */
+    var card = document.querySelector(".vac2-card[data-ref='" + CSS.escape(ref) + "']");
+    if (card && card.dataset.job) {
+      showDetail(card.dataset.job, false);
+    }
+  }());
+
+})();
+</script>

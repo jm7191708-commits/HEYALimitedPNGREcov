@@ -1,0 +1,123 @@
+<%- include("partials/header", {
+  active: "careers",
+  bodyId: "page-careers",
+  pageTitle: "Careers | HEYA Talent Solutions",
+  pageDescription: "HEYA Talent Solutions careers portals for employers, job seekers, and active vacancies across PNG resources, private business, and government sectors."
+}) %>
+
+<main id="content">
+
+  <%/* ── HERO ── */%>
+  <section class="page-hero section--dark">
+    <canvas id="careersWireframeCanvas" class="wireframe-canvas" aria-hidden="true" hidden></canvas>
+    <figure class="page-hero__cover" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=70" alt="" loading="eager" decoding="async" />
+    </figure>
+    <div class="container page-hero__inner">
+      <p class="eyebrow eyebrow--gold">Careers</p>
+      <h1>Your Gateway to PNG Workforce Opportunities</h1>
+      <p>Whether you are an employer building your team or a candidate ready for your next role, HEYA Talent Solutions has a dedicated portal for you. Choose where to begin below.</p>
+    </div>
+  </section>
+
+  <%/* ── PORTAL CARDS ── */%>
+  <section class="section" aria-label="Career portals">
+    <div class="container">
+      <div class="portal-grid">
+
+        <a class="portal-card portal-card--employer" href="/careers/employers">
+          <div class="portal-card__icon">
+            <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+          </div>
+          <div class="portal-card__body">
+            <p class="portal-card__label">For Employers</p>
+            <h2 class="portal-card__title">Employers Portal</h2>
+            <p class="portal-card__desc">Post vacancies, access talent pipelines, and get recruitment support tailored to PNG's resources, private business, and government sectors.</p>
+            <span class="portal-card__cta">Get Started <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </a>
+
+        <a class="portal-card portal-card--seeker" href="/careers/jobseekers">
+          <div class="portal-card__icon">
+            <i class="fa-solid fa-user-tie" aria-hidden="true"></i>
+          </div>
+          <div class="portal-card__body">
+            <p class="portal-card__label">For Candidates</p>
+            <h2 class="portal-card__title">Job Seekers Portal</h2>
+            <p class="portal-card__desc">Submit your CV, explore career guidance, and get connected with employers across mining, oil &amp; gas, construction, and more.</p>
+            <span class="portal-card__cta">Explore Opportunities <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </a>
+
+        <a class="portal-card portal-card--vacancies" href="/careers/vacancies">
+          <div class="portal-card__icon">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+          </div>
+          <div class="portal-card__body">
+            <p class="portal-card__label">Active Listings</p>
+            <h2 class="portal-card__title">Job Vacancy Board</h2>
+            <p class="portal-card__desc">Browse current openings across Papua New Guinea. Filter by industry, location, and employment type. New roles added regularly.</p>
+            <span class="portal-card__cta">View All Vacancies <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <%/* Why HEYA Talent Solutions */%>
+  <section class="section section--surface">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Why HEYA Talent Solutions</p>
+        <h2>PNG's Dedicated Workforce Platform</h2>
+      </div>
+      <p class="section-lead">We connect the right people with the right roles across Papua New Guinea's most active sectors, with local knowledge, industry depth, and end-to-end recruitment support.</p>
+    </div>
+    <div class="container card-grid" style="margin-top: clamp(1.5rem,3vw,2.5rem)">
+      <article class="card what-card">
+        <p class="card__kicker eyebrow">Local Expertise</p>
+        <h3>Deep PNG Industry Knowledge</h3>
+        <p>Our team understands recruiting for PNG resources, private business, and government environments, from FIFO logistics to local content requirements.</p>
+      </article>
+      <article class="card what-card">
+        <p class="card__kicker eyebrow">End-to-End Support</p>
+        <h3>From Advertising to Onboarding</h3>
+        <p>We don't just list jobs — we support employers through advertising, sourcing, screening, talent acquisition, mobilisation, and HR advisory.</p>
+      </article>
+      <article class="card what-card">
+        <p class="card__kicker eyebrow">Candidate Pipeline</p>
+        <h3>Qualified, Job-Ready Talent</h3>
+        <p>Our talent pool spans qualified professionals and tradespeople ready for deployment across PNG resources, private business, and government roles, with screening and verification handled by our recruitment team.</p>
+      </article>
+    </div>
+  </section>
+
+  <%/* ── INDUSTRIES STRIP ── */%>
+  <section class="section section--dark careers-industries">
+    <div class="container">
+      <div class="split">
+        <div>
+          <p class="eyebrow eyebrow--gold">Industries We Serve</p>
+          <h2>Roles Across PNG's Key Sectors</h2>
+        </div>
+      <p class="section-lead" style="color:rgba(255,255,255,0.75)">HEYA Talent Solutions recruits for PNG's resources, private business, government, and other workforce-intensive sectors.</p>
+      </div>
+      <div class="industries-grid">
+        <div class="industry-tile"><i class="fa-solid fa-helmet-safety" aria-hidden="true"></i><span>Mining &amp; Resources</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-fire-flame-curved" aria-hidden="true"></i><span>Oil &amp; Gas</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-hard-hat" aria-hidden="true"></i><span>Construction &amp; Infrastructure</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-truck" aria-hidden="true"></i><span>Logistics &amp; Transport</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-utensils" aria-hidden="true"></i><span>Hospitality &amp; Catering</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><span>Security Services</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-landmark" aria-hidden="true"></i><span>Government &amp; Public Sector</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-store" aria-hidden="true"></i><span>Retail &amp; Commercial</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-seedling" aria-hidden="true"></i><span>Agriculture &amp; Agribusiness</span></div>
+        <div class="industry-tile"><i class="fa-solid fa-people-group" aria-hidden="true"></i><span>Professional Services</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<%- include("partials/footer") %>

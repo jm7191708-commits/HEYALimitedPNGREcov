@@ -1,0 +1,1 @@
+Prepared from uploaded archive. Local .env, databases, dependencies, worktrees and Git history excluded. Sensitive values in render.yaml replaced with sync: false. Rotate previously embedded credentials before deployment. Review source for any other embedded credentials.

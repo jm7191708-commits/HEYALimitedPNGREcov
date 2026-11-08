@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Secure HEYA Talent Solutions dashboard login portal." />
+  <title>Dashboard Login | HEYA Talent Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;500;600;700;800&family=Source+Sans+3:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="/imgs/heya-talent-solutions-mark.jpg?v=20260518" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/site.css?v=20260514-dashboard-auth" />
+</head>
+<body class="page dashboard-login-page" id="page-dashboard-login">
+  <div class="dashboard-login-loader" id="dashboard-login-loader" hidden aria-hidden="true">
+    <div class="dashboard-login-loader__card" role="status" aria-live="polite" aria-label="Preparing dashboard">
+      <div class="dashboard-login-loader__animation">
+        <img class="dashboard-login-loader__logo" src="/imgs/heya-talent-solutions-mark.jpg?v=20260518" alt="" width="96" height="64" />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 66" class="dashboard-login-loader__spinner" role="presentation">
+          <defs>
+            <linearGradient id="dashboard-login-loader-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop stop-opacity="1" stop-color="#f5a800" offset="0%"></stop>
+              <stop stop-opacity="1" stop-color="#003b7a" offset="55%"></stop>
+              <stop stop-opacity="0" stop-color="#003b7a" offset="100%"></stop>
+            </linearGradient>
+          </defs>
+          <circle
+            stroke="url(#dashboard-login-loader-gradient)"
+            r="26"
+            cy="33"
+            cx="33"
+            stroke-width="3"
+            fill="transparent"
+            class="dashboard-login-loader__path">
+          </circle>
+        </svg>
+      </div>
+      <strong>Opening your dashboard</strong>
+      <p>Just a moment while everything gets ready.</p>
+    </div>
+  </div>
+
+  <main class="dashboard-login-shell">
+    <section class="dashboard-login-panel">
+      <a class="dashboard-login-brand" href="/" aria-label="HEYA Talent Solutions home">
+        <span class="dashboard-login-brand__mark">
+          <img src="/imgs/heya-talent-solutions-mark.jpg?v=20260518" alt="" width="56" height="37" />
+        </span>
+        <span class="dashboard-login-brand__copy">
+          <strong>HEYA Talent Solutions</strong>
+          <span>Dashboard Portal</span>
+        </span>
+      </a>
+
+      <div class="dashboard-login-card">
+        <p class="eyebrow">Secure Access</p>
+        <h1>Sign In to the Dashboard</h1>
+        <p class="dashboard-login-copy">Enter your administrator credentials to access employer requests, job postings, applications, and talent pool management.</p>
+
+        <form id="dashboard-login-form" class="dashboard-login-form" novalidate>
+          <input type="hidden" name="next" value="<%= loginConfig.next %>" />
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="username" required />
+          </label>
+          <label>
+            <span>Password</span>
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <button class="cta dashboard-login-submit" type="submit" <%= loginConfig.configured ? "" : "disabled" %>>
+            <span class="span" data-submit-label>Login</span>
+            <span class="dashboard-login-spinner" aria-hidden="true"></span>
+          </button>
+          <p class="dashboard-login-status" id="dashboard-login-status" role="status" aria-live="polite"></p>
+          <p class="dashboard-login-error" id="dashboard-login-error" role="alert" hidden></p>
+        </form>
+
+        <% if (!loginConfig.configured) { %>
+          <p class="dashboard-login-note">Dashboard authentication is not configured yet. Set the required dashboard environment variables before signing in.</p>
+        <% } %>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const form = document.getElementById("dashboard-login-form");
+      const shell = document.querySelector(".dashboard-login-shell");
+      const status = document.getElementById("dashboard-login-status");
+      const error = document.getElementById("dashboard-login-error");
+      const loader = document.getElementById("dashboard-login-loader");
+      const submit = form ? form.querySelector('button[type="submit"]') : null;
+      const submitLabel = submit ? submit.querySelector("[data-submit-label]") : null;
+      if (!form || !submit || !submitLabel || !loader || !shell) return;
+
+      const LOGIN_DELAY_MS = 2400;
+
+      const setLoading = (loading) => {
+        submit.disabled = loading;
+        submit.classList.toggle("is-loading", loading);
+        if (loading) {
+          status.textContent = "Logging in to Dashboard Portal...";
+          error.hidden = true;
+          error.textContent = "";
+        } else if (!status.dataset.success) {
+          status.textContent = "";
+        }
+      };
+
+      const showLoader = () => {
+        loader.hidden = false;
+        loader.setAttribute("aria-hidden", "false");
+        document.body.classList.add("dashboard-login-loading");
+        shell.classList.add("dashboard-login-fade");
+      };
+
+      const hideLoader = () => {
+        loader.hidden = true;
+        loader.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("dashboard-login-loading");
+        shell.classList.remove("dashboard-login-fade");
+      };
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        setLoading(true);
+
+        const payload = Object.fromEntries(new FormData(form));
+
+        try {
+          const response = await fetch("/api/dashboard/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json();
+
+          if (!response.ok || !result.ok) {
+            throw new Error(result.error || "Unable to sign in.");
+          }
+
+          status.dataset.success = "true";
+          status.textContent = "Login successful. Preparing dashboard...";
+          showLoader();
+
+          window.setTimeout(() => {
+            window.location.href = result.redirectTo || "/dashboard/";
+          }, LOGIN_DELAY_MS);
+        } catch (err) {
+          status.dataset.success = "";
+          error.hidden = false;
+          error.textContent = err.message || "Unable to sign in.";
+          hideLoader();
+          setLoading(false);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

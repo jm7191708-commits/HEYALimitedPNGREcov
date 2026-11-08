@@ -1,0 +1,220 @@
+<%- include("partials/header", {
+  active: "careers",
+  bodyId: "page-careers-employers",
+  pageTitle: "Employers Portal | HEYA Talent Solutions",
+  pageDescription: "Request job posting support and access qualified PNG candidates across mining, oil & gas, construction, engineering, and service industries."
+}) %>
+
+<main id="content">
+
+  <section class="page-hero section--dark" data-portal-default>
+    <canvas id="employersWireframeCanvas" class="wireframe-canvas" aria-hidden="true" hidden></canvas>
+    <figure class="page-hero__cover" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1800&q=70" alt="" loading="eager" decoding="async" />
+    </figure>
+    <div class="container page-hero__inner">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/careers">Careers</a>
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        <span aria-current="page">Employers Portal</span>
+      </nav>
+      <p class="eyebrow eyebrow--gold">Employers Portal</p>
+      <h1>Request a Job Posting for Your PNG Workforce Need.</h1>
+      <p>Submit a publication request and HEYA Talent Solutions will prepare your vacancy for listing, candidate reach, screening, and recruitment support.</p>
+      <div class="button-row">
+        <button class="btn btn--gold" type="button" data-portal-open-form="employer"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i>Post a Vacancy</button>
+        <a class="btn btn--outline-white" href="/packages"><i class="fa-solid fa-star" aria-hidden="true"></i>View Employer Packages</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section portal-focus-section" data-portal-default>
+    <div class="container portal-focus-grid">
+      <article class="portal-focus-card portal-focus-card--primary">
+        <p class="eyebrow">Request Job Posting</p>
+        <h2>Publish a vacancy with the details our team needs.</h2>
+        <p>Use the employer request form to send company, contact, role, criteria, deadline, and application instructions directly into the HEYA Talent Solutions dashboard.</p>
+        <button class="btn btn--dark" type="button" data-portal-open-form="employer"><i class="fa-solid fa-plus" aria-hidden="true"></i>Start Request</button>
+      </article>
+      <article class="portal-focus-card">
+        <p class="eyebrow">Dashboard Flow</p>
+        <h3>Every new request is flagged for review.</h3>
+        <p>Incoming employer requests are saved as new dashboard submissions with status tracking and notification flags for the recruitment team.</p>
+      </article>
+      <article class="portal-focus-card">
+        <p class="eyebrow">Recruitment Support</p>
+        <h3>Packages stay available during the flow.</h3>
+        <p>Employers can still review Silver, Bronze, and Gold support options while submitting a vacancy request.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section portal-form-section" data-portal-form="employer" hidden>
+    <div class="container form-page portal-form-layout">
+      <div>
+        <p class="eyebrow">Employers Portal</p>
+        <h2>Job Publication Request</h2>
+        <p>Send the details required for Glondia/PNG vacancy publication. Required fields are marked by the browser before submission.</p>
+        <button class="animated-button" type="button" data-portal-cancel-form>
+          <svg xmlns="http://www.w3.org/2000/svg" class="arr-1" viewBox="0 0 24 24" style="transform:scaleX(-1)"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+          <span class="text">Back to Portal</span>
+          <span class="circle"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="arr-2" viewBox="0 0 24 24" style="transform:scaleX(-1)"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+        </button>
+      </div>
+      <form id="advertise-form" class="form portal-request-form" novalidate>
+        <div class="form-grid">
+          <label><span>Company name *</span><input name="companyName" required autocomplete="organization" /></label>
+          <label><span>Company address / location *</span><input name="companyAddress" required /></label>
+          <label><span>Company contact number *</span><input name="phone" required autocomplete="tel" /></label>
+          <label><span>Company email *</span><input name="email" type="email" required autocomplete="email" /></label>
+          <label><span>HR manager / contact person *</span><input name="fullName" required autocomplete="name" /></label>
+          <label><span>Contact person role/title *</span><input name="contactPersonRole" required /></label>
+        </div>
+
+        <div class="form-grid">
+          <label><span>Job title *</span><input name="jobTitle" required /></label>
+          <label><span>Job category / department *</span><input name="jobCategory" required /></label>
+          <label><span>Job location *</span><input name="location" required /></label>
+          <label><span>Employment type *</span>
+            <select name="employmentType" required>
+              <option value="">Select type</option>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Contract</option>
+              <option>Temporary</option>
+              <option>FIFO</option>
+              <option>Casual</option>
+            </select>
+          </label>
+          <label><span>Salary range, if applicable</span><input name="salaryDisplay" placeholder="e.g. PGK 45,000 - 60,000" /></label>
+          <label><span>Application deadline *</span><input name="applicationDeadline" type="date" required /></label>
+        </div>
+
+        <input type="hidden" name="industry" value="" />
+        <input type="hidden" name="packageInterest" value="Employers Portal Request" />
+
+        <label><span>Job description *</span><textarea name="jobDescription" required></textarea></label>
+        <label><span>Job criteria *</span><textarea name="jobCriteria" required></textarea></label>
+        <label><span>Minimum qualifications *</span><textarea name="minimumQualifications" required></textarea></label>
+        <label><span>Required experience *</span><textarea name="requiredExperience" required></textarea></label>
+        <div class="skill-builder" id="employerSkillBuilder" data-skill-builder>
+          <span class="skill-builder__label">Required skills *</span>
+          <div class="skill-builder__input-row">
+            <input type="text" class="skill-builder__input" placeholder="e.g. AutoCAD, Budgeting" autocomplete="off" maxlength="60" />
+            <button type="button" class="skill-builder__add-btn"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add</button>
+          </div>
+          <ul class="skill-builder__list" aria-label="Added skills" aria-live="polite"></ul>
+          <input type="hidden" name="requiredSkills" class="skill-builder__value" />
+          <p class="skill-builder__empty">No skills added yet — type a skill above and press Add.</p>
+        </div>
+
+        <div class="app-instr-field">
+          <div class="app-instr-field__head">
+            <span class="app-instr-field__label">Application instructions *</span>
+            <div class="app-instr-field__mode">
+              <span class="app-instr-field__mode-label">Write</span>
+              <label class="switch switch--sm" aria-label="Switch between writing and uploading instructions">
+                <input type="checkbox" id="appInstrModeToggle" checked>
+                <span class="slider"></span>
+              </label>
+              <span class="app-instr-field__mode-label">Upload file</span>
+            </div>
+          </div>
+          <textarea name="applicationInstructions" class="app-instr-field__text" required></textarea>
+          <div class="app-instr-field__upload file-upload-wrap" hidden>
+            <input class="file-upload-input" id="appInstrFile" name="applicationInstructionsFile" type="file" accept=".pdf,.doc,.docx,.rtf,.txt" aria-label="Upload application instructions" disabled />
+            <label class="file-upload-btn" for="appInstrFile" tabindex="0">
+              <span class="file-upload-btn__text">Choose file</span>
+              <span class="file-upload-btn__icon" aria-hidden="true">+</span>
+            </label>
+          </div>
+        </div>
+        <div class="toggle-field">
+          <div class="toggle-field__head">
+            <span class="toggle-field__label">Supporting notes / other notes</span>
+            <label class="switch" aria-label="Toggle supporting notes field">
+              <input type="checkbox" class="toggle-field__check">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <textarea name="supportingNotes" class="toggle-field__body"></textarea>
+        </div>
+
+        <div class="toggle-field">
+          <div class="toggle-field__head">
+            <span class="toggle-field__label">Additional message from employer</span>
+            <label class="switch" aria-label="Toggle additional message field">
+              <input type="checkbox" class="toggle-field__check">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <textarea name="additionalMessage" class="toggle-field__body"></textarea>
+        </div>
+
+        <button class="cta" type="submit">
+          <span class="span" data-submit-label>Submit Job Posting Request</span>
+          <span class="second" aria-hidden="true">
+            <svg width="50px" height="20px" viewBox="0 0 66 43" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <path class="one" d="M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z" fill="#FFFFFF"></path>
+                <path class="two" d="M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z" fill="#FFFFFF"></path>
+                <path class="three" d="M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z" fill="#FFFFFF"></path>
+              </g>
+            </svg>
+          </span>
+        </button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section cta-band section--dark portal-package-band" data-portal-keep>
+    <div class="container cta-band__inner">
+      <div>
+        <p class="eyebrow eyebrow--gold">Employer Packages</p>
+        <h2>Silver, Bronze &amp; Gold Packages</h2>
+        <p>Flexible quote-based packages for vacancy visibility, candidate reach, and full recruitment partnership.</p>
+      </div>
+      <div class="button-row">
+        <a class="btn btn--gold" href="/packages"><i class="fa-solid fa-star" aria-hidden="true"></i>View Packages</a>
+        <a class="btn btn--outline-white" href="/contact?intent=employer-enquiry"><i class="fa-solid fa-envelope" aria-hidden="true"></i>Get a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface portal-compact-vacancies" data-portal-default aria-label="Current vacancies">
+    <div class="container">
+      <div class="portal-section-head">
+        <div>
+          <p class="eyebrow">Current Vacancies</p>
+          <h2>Smaller Vacancy Snapshot</h2>
+          <p class="section-lead" style="margin-top:.5rem">Current vacancies remain available for reference, while this portal focuses on new employer requests.</p>
+        </div>
+        <button class="btn btn--outline" type="button" data-portal-open-form="employer"><i class="fa-solid fa-plus" aria-hidden="true"></i>Request Job Posting</button>
+      </div>
+      <div class="job-grid job-grid--compact" style="margin-top:clamp(1.2rem,2vw,1.8rem)">
+        <% jobs.slice(0, 3).forEach((job) => { %>
+        <article class="job-card job-card--compact<% if (job.featured) { %> job-card--featured<% } %>">
+          <div class="job-card__tags">
+            <span class="job-tag job-tag--industry"><i class="fa-solid fa-industry" aria-hidden="true"></i><%= job.industry %></span>
+            <% if (job.urgent) { %><span class="job-tag job-tag--urgent">Urgent</span><% } %>
+          </div>
+          <h3 class="job-card__title"><%= job.title %></h3>
+          <ul class="job-card__meta">
+            <li><i class="fa-solid fa-building" aria-hidden="true"></i><%= job.company %></li>
+            <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i><%= job.location %></li>
+          </ul>
+          <div class="job-card__footer">
+            <a class="btn btn--outline btn--sm" href="/advertise?jobTitle=<%= encodeURIComponent(job.title) %>">Fill Similar Role</a>
+            <a class="btn btn--dark btn--sm" href="/contact?intent=employer-enquiry&role=<%= encodeURIComponent(job.title) %>&ref=<%= encodeURIComponent(job.ref) %>">Close Vacancy</a>
+          </div>
+        </article>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<%- include("partials/footer") %>

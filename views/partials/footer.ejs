@@ -1,0 +1,100 @@
+  <aside class="contact-rail" aria-label="Quick contact links">
+    <a class="contact-rail__link" href="mailto:<%= businessEmail %>" aria-label="Email HEYA Talent Solutions">
+      <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+    </a>
+    <a class="contact-rail__link" href="https://www.facebook.com/share/1NVafy27Vi/" aria-label="HEYA Talent Solutions Facebook">
+      <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+    </a>
+    <a class="contact-rail__link" href="https://www.linkedin.com/company/heya-stap-strategic-talent-acquisition-partner/" aria-label="HEYA Talent Solutions LinkedIn">
+      <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+    </a>
+    <button class="contact-rail__toggle" type="button" aria-label="Show quick contact links" aria-expanded="true">
+      <span aria-hidden="true">&gt;</span>
+    </button>
+  </aside>
+
+  <footer class="site-footer">
+    <div class="container footer__grid">
+      <section class="footer__brand">
+        <a class="brand brand--footer" href="/" aria-label="HEYA Talent Solutions home">
+          <img class="brand__full-logo" src="/imgs/heya-talent-solutions-logo.jpg?v=20260518" alt="HEYA Talent Solutions - a division of HEYA Limited" width="1000" height="416" loading="lazy" decoding="async" />
+        </a>
+        <p>A division of HEYA Limited and Strategic Talent Acquisition Partner for Papua New Guinea. Connecting talents. Empowering business. Building the future.</p>
+      </section>
+
+      <section>
+        <h2 class="footer__heading">Links</h2>
+        <ul class="footer__list">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/careers/vacancies">Job Vacancies</a></li>
+          <li><a href="/packages">Packages</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/advertise">Advertise a Vacancy</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="footer__heading">Contact</h2>
+        <ul class="footer__list">
+          <li><a href="mailto:<%= businessEmail %>"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <%= businessEmail %></a></li>
+          <li><a href="tel:+67571555038"><i class="fa-solid fa-phone" aria-hidden="true"></i> 71555038</a></li>
+          <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Port Moresby, Papua New Guinea</li>
+        </ul>
+        <div class="footer__socials" aria-label="Social links">
+          <a class="footer__social-link" href="https://www.facebook.com/share/1NVafy27Vi/" aria-label="HEYA Talent Solutions Facebook">
+            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+          </a>
+          <a class="footer__social-link" href="https://www.linkedin.com/company/heya-stap-strategic-talent-acquisition-partner/" aria-label="HEYA Talent Solutions LinkedIn">
+            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+          </a>
+          <a class="footer__social-link" href="mailto:<%= businessEmail %>" aria-label="Email HEYA Talent Solutions">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <div class="container footer__bottom">
+      <small>&copy; <%= new Date().getFullYear() %> HEYA Talent Solutions, a division of HEYA Limited. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <!-- Chatbot UI -->
+  <div id="chatbot-container" class="chatbot-container">
+    <div id="chatbot-window" class="chatbot-window hidden" aria-hidden="true">
+      <header class="chatbot-header">
+        <canvas id="chatbotHeaderCanvas" class="wireframe-canvas" aria-hidden="true"></canvas>
+        <div class="chatbot-header__left">
+          <div class="chatbot-logo-box">
+            <img src="/imgs/heya-talent-solutions-mark.jpg?v=20260518" alt="HEYA Talent Solutions logo" width="36" height="24">
+          </div>
+          <div class="chatbot-header__info">
+            <span class="chatbot-title">ChatBot Assistant</span>
+            <span class="chatbot-status">powered by RoxanneAI free trial mode</span>
+          </div>
+        </div>
+        <button id="chatbot-close" class="chatbot-close" aria-label="Close Chat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      </header>
+      <div id="chatbot-messages" class="chatbot-messages">
+        <!-- Messages will appear here -->
+      </div>
+      <footer class="chatbot-input-bar">
+        <input type="text" id="chatbot-input" placeholder="Type a message..." aria-label="Chat input">
+        <button id="chatbot-send" class="chatbot-send">Send</button>
+      </footer>
+    </div>
+    <button id="chatbot-toggle" class="chatbot-toggle" aria-label="Toggle Chatbot">
+      <img src="/imgs/heya-talent-solutions-mark.jpg?v=20260518" alt="Glondia Assistant" width="48" height="32">
+    </button>
+  </div>
+
+  <script>
+    window.CHATBOT_CONFIG = <%- JSON.stringify(chatbotConfig) %>;
+  </script>
+  </div>
+  <script src="/site.js?v=20260524-applysheet" defer></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  ci:
+    name: CI Check
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    name: Trigger Render Deploy
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: Deploy info
+        run: |
+          echo "========================================"
+          echo "  Deploying to Render"
+          echo "========================================"
+          echo "  Commit : ${{ github.sha }}"
+          echo "  Author : ${{ github.actor }}"
+          echo "  Message: ${{ github.event.head_commit.message }}"
+          echo "========================================"
+
+      - name: Trigger Render deploy hook
+        if: ${{ secrets.RENDER_DEPLOY_HOOK_URL != '' }}
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -1)
+          echo "Render response: $BODY (HTTP $HTTP_CODE)"
+          if [ "$HTTP_CODE" != "200" ] && [ "$HTTP_CODE" != "201" ]; then
+            echo "Warning: Render deploy hook returned HTTP $HTTP_CODE"
+          else
+            echo "Render deploy triggered successfully."
+          fi
+
+      - name: Auto-deploy note
+        if: ${{ secrets.RENDER_DEPLOY_HOOK_URL == '' }}
+        run: |
+          echo "No RENDER_DEPLOY_HOOK_URL secret set."
+          echo "Render will still auto-deploy via autoDeployTrigger: commit in render.yaml."
+          echo "To add the hook: Render → heya-limited-website → Settings → Deploy Hook → copy URL"
+          echo "Then: GitHub → pistion/HEYALimitedWebsite → Settings → Secrets → Actions → New secret"
+          echo "Name: RENDER_DEPLOY_HOOK_URL  Value: <paste hook URL>"

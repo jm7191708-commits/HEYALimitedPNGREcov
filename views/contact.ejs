@@ -1,0 +1,169 @@
+<%- include("partials/header", {
+  active: "contact",
+  bodyId: "page-contact",
+  pageTitle: "Contact | HEYA Talent Solutions",
+  pageDescription: "Contact HEYA Talent Solutions for recruitment, labour hire, workforce, and talent solutions across Papua New Guinea."
+}) %>
+
+<main id="content">
+  <!-- Do not publish NID number, private personal ID details, or tax numbers unless client explicitly confirms. -->
+  <section class="page-hero section--dark">
+    <canvas id="contactWireframeCanvas" class="wireframe-canvas" aria-hidden="true" hidden></canvas>
+    <figure class="page-hero__cover" aria-hidden="true">
+      <img src="/imgs/heya-workforce-hero-desktop1.png" alt="" loading="eager" decoding="async" />
+    </figure>
+    <div class="container page-hero__inner">
+      <p class="eyebrow eyebrow--gold">Contact</p>
+      <h1>Contact HEYA Talent Solutions</h1>
+      <p>Reach out to advertise a vacancy, request recruitment support, discuss labour hire, or plan workforce solutions across Papua New Guinea.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-layout">
+      <aside class="contact-panel">
+        <p class="eyebrow">Contact Details</p>
+        <h2>Hekeria Yako</h2>
+        <ul class="contact-list">
+          <li><span>Email</span><a href="mailto:<%= businessEmail %>"><%= businessEmail %></a></li>
+          <li><span>Phone</span><a href="tel:+67571555038">71555038</a></li>
+          <li><span>Location</span>Port Moresby, Papua New Guinea</li>
+          <li><span>Postal Address</span>PO Box 2114, Vision City 1311, Waigani, NCD</li>
+        </ul>
+        <p class="small-note">If your company, agency, contractor team, or project is hiring or preparing for a workforce requirement, contact HEYA Talent Solutions to discuss the best recruitment, labour hire, advertising, or workforce support option.</p>
+      </aside>
+
+      <section class="form-panel" aria-labelledby="contact-form-title">
+        <p class="eyebrow">Recruitment Enquiry</p>
+        <h2 id="contact-form-title">Send an enquiry</h2>
+        <p id="contact-form-intro">Use this form for employer enquiries, recruitment support, candidate interest, or role-specific applications routed from the careers pages.</p>
+        <form id="contact-form" class="form" method="post" action="/api/contact" novalidate>
+          <input type="hidden" name="careerIntent" id="career-intent" value="" />
+          <input type="hidden" name="jobPostingId" id="job-posting-id" value="" />
+          <div class="form-grid">
+            <label>
+              <span>Full Name</span>
+              <input type="text" name="fullName" autocomplete="name" required />
+            </label>
+            <label>
+              <span>Company Name</span>
+              <input type="text" name="companyName" autocomplete="organization" />
+            </label>
+            <label>
+              <span>Email Address</span>
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+            <label>
+              <span>Phone Number</span>
+              <input type="tel" name="phone" autocomplete="tel" required />
+            </label>
+            <label class="career-only" data-career-role="job-application jobseeker-cv" hidden>
+              <span>Current Location</span>
+              <input type="text" name="currentLocation" />
+            </label>
+            <label class="career-only" data-career-role="job-application jobseeker-cv" hidden>
+              <span>Years of Experience</span>
+              <input type="text" name="yearsExperience" placeholder="Example: 5 years" />
+            </label>
+            <label class="career-only" data-career-role="jobseeker-cv" hidden>
+              <span>Desired Roles</span>
+              <input type="text" name="desiredRoles" placeholder="Example: HR Administrator, Payroll Officer" />
+            </label>
+            <label class="career-only" data-career-role="jobseeker-cv" hidden>
+              <span>Preferred Industries</span>
+              <input type="text" name="industries" placeholder="Example: Mining, Construction, Professional Services" />
+            </label>
+          </div>
+          <label id="service-needed-wrap">
+            <span>Service Needed</span>
+            <select name="serviceNeeded" required>
+              <option value="">Select a service</option>
+              <option>Recruitment &amp; Talent Acquisition</option>
+              <option>Labour Hire &amp; Workforce Management</option>
+              <option>Talent Onboarding &amp; Mobilization</option>
+              <option>HR &amp; Workforce Support Services</option>
+              <option>Training &amp; Job Ready Programs</option>
+              <option>Advertising &amp; Talent Marketing</option>
+              <option>Job Application / CV Submission</option>
+              <option>General Enquiry</option>
+            </select>
+          </label>
+          <label>
+            <span id="contact-message-label">Message</span>
+            <textarea name="message" rows="6" required></textarea>
+          </label>
+          <div class="contact-file-row career-only" data-career-role="job-application jobseeker-cv" hidden>
+            <div class="contact-file-field">
+              <span class="contact-file-label">CV / Resume</span>
+              <input type="file" name="cvFile" accept=".pdf,.doc,.docx,.rtf,.txt" class="contact-file-input" id="contactCvFile" />
+              <label for="contactCvFile" class="contact-file-trigger" tabindex="0">
+                <div class="plusButton" aria-hidden="true">
+                  <svg class="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                    <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
+                  </svg>
+                </div>
+                <span class="contact-file-name">No file chosen</span>
+              </label>
+            </div>
+            <div class="contact-file-field">
+              <span class="contact-file-label">Cover Letter</span>
+              <input type="file" name="coverLetterFile" accept=".pdf,.doc,.docx,.rtf,.txt" class="contact-file-input" id="contactCoverFile" />
+              <label for="contactCoverFile" class="contact-file-trigger" tabindex="0">
+                <div class="plusButton" aria-hidden="true">
+                  <svg class="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                    <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
+                  </svg>
+                </div>
+                <span class="contact-file-name">No file chosen</span>
+              </label>
+            </div>
+          </div>
+          <button class="cta" type="submit">
+            <span class="span" data-submit-label>Send Enquiry</span>
+            <span class="second" aria-hidden="true">
+              <svg width="50px" height="20px" viewBox="0 0 66 43" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <path class="one" d="M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z" fill="#FFFFFF"></path>
+                  <path class="two" d="M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z" fill="#FFFFFF"></path>
+                  <path class="three" d="M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z" fill="#FFFFFF"></path>
+                </g>
+              </svg>
+            </span>
+          </button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container split split--center">
+      <div>
+        <p class="eyebrow">Social Links</p>
+        <h2>Follow HEYA Talent Solutions</h2>
+      </div>
+      <div class="social-grid">
+        <a class="social-card" href="https://www.facebook.com/share/1NVafy27Vi/" aria-label="HEYA Talent Solutions Facebook page">
+          <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+          <span>Facebook</span>
+        </a>
+        <a class="social-card" href="https://www.linkedin.com/company/heya-stap-strategic-talent-acquisition-partner/" aria-label="HEYA Talent Solutions LinkedIn page">
+          <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+          <span>LinkedIn</span>
+        </a>
+        <a class="social-card" href="mailto:<%= businessEmail %>" aria-label="Email HEYA Talent Solutions">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          <span>Email</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-band">
+    <div class="container cta-band__inner">
+      <p>HEYA Talent Solutions is a division of HEYA Limited and a Strategic Talent Acquisition Partner for Papua New Guinea. Connecting talents. Empowering business. Building the future.</p>
+    </div>
+  </section>
+</main>
+
+<%- include("partials/footer") %>
